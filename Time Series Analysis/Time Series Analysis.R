@@ -1,4 +1,4 @@
-library(xts)
+library(MASS)
 
 # Dates
 date_2011 <- as.Date(c('2011-07-01', '2011-07-08', '2011-07-15', '2011-07-22', '2011-07-29', '2011-08-06', '2011-08-13', '2011-08-20', '2011-08-27', '2011-09-03', '2011-09-10', '2011-09-17', '2011-09-24'))
@@ -19,14 +19,15 @@ total_2011n <- data.frame(jp = jp_total_2011n, sa = sa_total_2011n, nz = nz_tota
 cor(total_2011n)
 
 # 2011 data frame and feature creation
+week <- 1:13
 weeks <- c(rep(1:13, 3))
 country <- c(rep('JP', 13), rep('SA', 13), rep('NZ', 13))
+launch <- c(rep('bf',3), 'launch', rep('af',9))
 launch <- c(rep((c(rep('bf',3), 'launch', rep('af',9))),3))
-
-############################
 
 jp_one_week_bf_2011 <- c(NA, 5297, 4398, 4979, 13445, 10433, 9390, 8920, 8474, 8051, 7648, 6597, 6795)
 jp_two_week_bf_2011 <- c(NA, NA, 5297, 4398, 4979, 13445, 10433, 9390, 8920, 8474, 8051, 7648, 6597)
+jp_three_week_bf_2011 <- c(NA, NA, NA, 5297, 4398, 4979, 13445, 10433, 9390, 8920, 8474, 8051, 7648)
 sa_one_week_bf_2011 <- c(NA, 2375, 2172, 2033, 4573, 5545, 4436, 3549, 3371, 3203, 3042, 2982, 3041)
 sa_two_week_bf_2011 <- c(NA, NA, 2375, 2172, 2033, 4573, 5545, 4436, 3549, 3371, 3203, 3042, 2982)
 nz_one_week_bf_2011 <- c(NA, 3700, 3333, 3119, 7018, 8509, 6807, 5446, 5173, 4915, 4669, 4576, 4667)
@@ -34,14 +35,16 @@ nz_two_week_bf_2011 <- c(NA, NA, 3700, 3333, 3119, 7018, 8509, 6807, 5446, 5173,
 one_week_bf_2011 <- c(jp_one_week_bf_2011, sa_one_week_bf_2011, nz_one_week_bf_2011)
 two_week_bf_2011 <- c(jp_two_week_bf_2011, sa_two_week_bf_2011, nz_two_week_bf_2011)
 
+# data frame
+data_2011 <- data.frame(amount = total_2011, one_week_bf = one_week_bf_2011, two_week_bf = two_week_bf_2011, country = country, weeks = weeks, launch = launch)
+jp_2011 <- data.frame(amount = jp_total_2011, one_week_bf = jp_one_week_bf_2011, two_week_bf = jp_two_week_bf_2011, three_week_bf = jp_three_week_bf_2011, launch = launch, week = week)
+View(data_2011)
 
-total_2011n <- data.frame(amount = total_2011, one_week_bf = one_week_bf_2011, two_week_bf = two_week_bf_2011, country = country, weeks = weeks)
-
-plot(japan_total_2011n ~ weeks, col="red", pch = 20, type = "l", main = "Plot of iShades sales in JP, SA & NZ in 2011 3Q", xlab = "Weeks in 2011 3Q", ylab = 'Sales (normalized)')
-lines(sa_total_2011n ~ weeks, col="blue", pch = 20)
-lines(nz_total_2011n ~ weeks, col="green", pch=20)
+# exploratory analysis
+plot(jp_total_2011n ~ week, col="red", pch = 20, type = "l", main = "Plot of iShades sales in JP, SA & NZ in 2011 3Q", xlab = "Weeks in 2011 3Q", ylab = 'Sales (normalized)')
+lines(sa_total_2011n ~ week, col="blue", pch = 20)
+lines(nz_total_2011n ~ week, col="green", pch=20)
 legend('topright', c("Japan", "South Asia", "New Zealand"), lty=1, lwd=2.5, col=c("red", "blue", "green"))
-
 
 # 2012 data
 japan_total_2012 <- c(7946, 6641, 5975, 5378, 5217, NA, NA, NA, NA, NA, NA, NA, NA)
@@ -49,12 +52,6 @@ japan_s <- c(2394, 2027, 1824, 1642, 1593, NA, NA, NA, NA, NA, NA, NA, NA)
 japan_t_2012 <- xts(japan_total, date_2012)
 japan_s_2012 <- xts(japan_s, date_2012)
 japan_s_2012
-
-# exploratory analysis
-colI <- 1:16
-rowI <- 17
-xl_file <- 'iShades APAC v1.1.xlsx'
-gas  <- read.xlsx(xl_file, sheetName = 'Case', colIndex = colI, rowIndex = rowI)
 
 par(mfrow=c(1,2))
 plot(japan_2011, ylim = c(0, 14000))
@@ -65,6 +62,7 @@ acf(japan_2011)
 Box.test(japan_2011)
 pacf(japan_2011)
 
+=================================
 # data frame and feature creation
 japan_total <- data.frame(amt = total_amt, date = c(date_2011, date_2012), year = year, launch = launch, one_week_bf = one_week_bf, two_week_bf = two_week_bf, three_week_bf = three_week_bf, week = c(week, week))
 View(japan_total)
@@ -87,34 +85,65 @@ two_week_bf <- c(two_week_bf_2011, two_week_bf_2012)
 three_week_bf_2011 <- c(NA, NA, NA, 5297, 4398, 4979, 13445, 10433, 9390, 8920, 8474, 8051, 7648)
 three_week_bf_2012 <- c(NA, NA, NA, 7946, 6641, NA, NA, NA, NA, NA, NA, NA, NA)
 three_week_bf <- c(three_week_bf_2011, three_week_bf_2012)
-
-summary(model1)
-plot(japan_total$amt ~ japan_total$week, pch = 20, col = japan_total$year)
-
+=============================================
 # basic model
-model0 <- lm(amt ~ launch + one_week_bf + two_week_bf + three_week_bf, data = japan_2011)
+model0 <- lm(amount ~ launch + one_week_bf + two_week_bf + country, data = data_2011)
 summary(model0)
+plot(model0)
 
-# basic model2
-model01 <- lm(amt ~ launch + I(one_week_bf^2), data = japan_2011)
-model02 <- lm(amt ~ launch + I(one_week_bf^2) + I(two_week_bf^2), data = japan_2011)
-summary(model01)
-summary(model02)
-plot(model01)
-plot(model02)
-attach(japan_2011)
-plot(japan_2011$amt ~ japan_2011$week, col = "red")
-points(2:13, model01$fitted, col="blue")
-points(3:13, model02$fitted, col="green")
-
-# week before values squared
-model1 <- lm(amt ~ launch + one_week_bf + I(one_week_bf^2) + two_week_bf + I(two_week_bf^2)+ three_week_bf + I(three_week_bf^3), data = japan_2011)
+# quadratic models
+model1 <- lm(amount ~ launch + I(one_week_bf^2) + country, data = data_2011)
 summary(model1)
-
-# interactions between launch and weeks before
-model2 <- lm(amt ~ launch + one_week_bf*launch + two_week_bf*launch + three_week_bf*launch, data = japan_2011)
+plot(model1)
+model2 <- lm(amount ~ launch + I(one_week_bf^2) + I(two_week_bf^2), data = data_2011)
 summary(model2)
+plot(model2)
 
-points(japan_2011$launch,fitted(model1),col="red",pch=20)
-plot(japan_2011$amt ~ japan_2011$week, pch = 20)
+# basic model (jp) (best model in RSE and fit)
+model0 <- lm(amount ~ launch + one_week_bf + two_week_bf, data = jp_2011)
+summary(model0)
+plot(model0)
+AIC(model0)
 
+# better than previous, but concerns about overfitting
+model0a <- lm(amount ~ launch + one_week_bf, data = jp_2011)
+summary(model0a)
+plot(model0a)
+AIC(model0a)
+
+model0b <- lm(amount ~ launch + one_week_bf + two_week_bf + three_week_bf, data = jp_2011)
+summary(model0b)
+plot(model0b)
+AIC(model0b)
+
+# quadratic models (jp)
+model1 <- lm(amount ~ launch + I(one_week_bf^2), data = jp_2011)
+summary(model1)
+plot(model1)
+AIC(model1)
+model2 <- lm(amount ~ launch + I(one_week_bf^2) + I(two_week_bf^2), data = jp_2011)
+summary(model2)
+plot(model2)
+AIC(model2)
+
+# interaction model (same as model 1)
+model3 <- lm(amount ~ launch*I(one_week_bf^2), data = jp_2011)
+summary(model3)
+plot(model3)
+
+# plot of actual and predicted values
+plot(jp_2011$amount ~ jp_2011$week, col = "red", type = 'l')
+lines(3:13, model0$fitted, col="blue")
+lines(2:13, model0a$fitted, col="orange")
+lines(4:13, model0b$fitted, col="cyan")
+lines(2:13, model1$fitted, col="green")
+lines(3:13, model2$fitted, col="blueviolet")
+
+# predictions
+jp_total_2012 <- c(7946, 6641, 5975, 5378, 5217, NA, NA, NA, NA, NA, NA, NA, NA)
+jp_one_week_bf_2012 <- c(NA, 7946, 6641, 5975, 5378, 5217, NA, NA, NA, NA, NA, NA, NA)
+jp_two_week_bf_2012 <- c(NA, NA, 7946, 6641, 5975, 5378, 5217, NA, NA, NA, NA, NA, NA)
+launch_2012 <- c(rep('bf', 5), 'launch', rep('af', 7))
+newdata <- data.frame(amount = jp_total_2012, one_week_bf = jp_one_week_bf_2012, two_week_bf = jp_two_week_bf_2012, launch = launch_2012, week = week)
+View(newdata)
+predict(model0, newdata)
