@@ -146,4 +146,4 @@ jp_two_week_bf_2012 <- c(NA, NA, 7946, 6641, 5975, 5378, 5217, NA, NA, NA, NA, N
 launch_2012 <- c(rep('bf', 5), 'launch', rep('af', 7))
 newdata <- data.frame(amount = jp_total_2012, one_week_bf = jp_one_week_bf_2012, two_week_bf = jp_two_week_bf_2012, launch = launch_2012, week = week)
 View(newdata)
-predict(model0, newdata)
+predict(model0, newdata, interval='predict')
