@@ -1,4 +1,6 @@
-library(MASS)
+########################################################
+# Data and Feature Creation
+########################################################
 
 # Dates
 date_2011 <- as.Date(c('2011-07-01', '2011-07-08', '2011-07-15', '2011-07-22', '2011-07-29', '2011-08-06', '2011-08-13', '2011-08-20', '2011-08-27', '2011-09-03', '2011-09-10', '2011-09-17', '2011-09-24'))
@@ -126,25 +128,40 @@ nz_total_2wbf_2012 <- c(NA, NA, 5181, 4333, 3898, 3509, 3403, NA, NA, NA, NA, NA
 nz_2012_data <- data.frame(amount = nz_total_2012, one_week_bf = nz_total_1wbf_2012, two_week_bf = nz_total_2wbf_2012, week = week, launch = launch_2012)
 View(nz_2012_data)
 
+# Colour Breakdown (Silver, Pink, Red, Green, Blue; actual, one week before, two weeks before)
+nz_s_2012 <- c(1817, 1538, 1384, 1246, 1209, NA, NA, NA, NA, NA, NA, NA, NA)
+nz_s_1wbf_2012 <- c(NA, 1817, 1538, 1384, 1246, 1209, NA, NA, NA, NA, NA, NA, NA)
+nz_s_2wbf_2012 <- c(NA, NA, 1817, 1538, 1384, 1246, 1209, NA, NA, NA, NA, NA, NA)
+nz_s_2012_data <- data.frame(amount = nz_s_2012, one_week_bf = nz_s_1wbf_2012, two_week_bf = nz_s_2wbf_2012, week = week, launch = launch_2012)
+View(nz_s_2012_data)
 
+nz_p_2012 <- c(795, 678, 610, 549, 532, NA, NA, NA, NA, NA, NA, NA, NA)
+nz_p_1wbf_2012 <- c(NA, 795, 678, 610, 549, 532, NA, NA, NA, NA, NA, NA, NA)
+nz_p_2wbf_2012 <- c(NA, NA, 795, 678, 610, 549, 532, NA, NA, NA, NA, NA, NA)
+nz_p_2012_data <- data.frame(amount = nz_p_2012, one_week_bf = nz_p_1wbf_2012, two_week_bf = nz_p_2wbf_2012, week = week, launch = launch_2012)
+View(nz_p_2012_data)
 
+nz_r_2012 <- c(562, 469, 422, 380, 369, NA, NA, NA, NA, NA, NA, NA, NA)
+nz_r_1wbf_2012 <- c(NA, 562, 469, 422, 380, 369, NA, NA, NA, NA, NA, NA, NA)
+nz_r_2wbf_2012 <- c(NA, NA, 562, 469, 422, 380, 369, NA, NA, NA, NA, NA, NA)
+nz_r_2012_data <- data.frame(amount = nz_r_2012, one_week_bf = nz_r_1wbf_2012, two_week_bf = nz_r_2wbf_2012, week = week, launch = launch_2012)
+View(nz_r_2012_data)
 
+nz_g_2012 <- c(532, 431, 388, 349, 339, NA, NA, NA, NA, NA, NA, NA, NA)
+nz_g_1wbf_2012 <- c(NA, 532, 431, 388, 349, 339, NA, NA, NA, NA, NA, NA, NA)
+nz_g_2wbf_2012 <- c(NA, NA, 532, 431, 388, 349, 339, NA, NA, NA, NA, NA, NA)
+nz_g_2012_data <- data.frame(amount = nz_g_2012, one_week_bf = nz_g_1wbf_2012, two_week_bf = nz_g_2wbf_2012, week = week, launch = launch_2012)
+View(nz_g_2012_data)
 
+nz_b_2012 <- c(1475, 1216, 1094, 984, 955, NA, NA, NA, NA, NA, NA, NA, NA)
+nz_b_1wbf_2012 <- c(NA, 1475, 1216, 1094, 984, 955, NA, NA, NA, NA, NA, NA, NA)
+nz_b_2wbf_2012 <- c(NA, NA, 1475, 1216, 1094, 984, 955, NA, NA, NA, NA, NA, NA)
+nz_b_2012_data <- data.frame(amount = nz_b_2012, one_week_bf = nz_b_1wbf_2012, two_week_bf = nz_b_2wbf_2012, week = week, launch = launch_2012)
+View(nz_b_2012_data)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+########################################################
+# Exploratory Analysis
+########################################################
 
 # normalization
 jp_total_2011n <- scale(jp_total_2011)
@@ -154,97 +171,53 @@ total_2011n <- data.frame(jp = jp_total_2011n, sa = sa_total_2011n, nz = nz_tota
 # correlation check
 cor(total_2011n)
 
-# 2011 data frame and feature creation
-
-launch <- c(rep((c(rep('bf',3), 'launch', rep('af',9))),3))
-
-
-sa_one_week_bf_2011 <- c(NA, 2375, 2172, 2033, 4573, 5545, 4436, 3549, 3371, 3203, 3042, 2982, 3041)
-sa_two_week_bf_2011 <- c(NA, NA, 2375, 2172, 2033, 4573, 5545, 4436, 3549, 3371, 3203, 3042, 2982)
-nz_one_week_bf_2011 <- c(NA, 3700, 3333, 3119, 7018, 8509, 6807, 5446, 5173, 4915, 4669, 4576, 4667)
-nz_two_week_bf_2011 <- c(NA, NA, 3700, 3333, 3119, 7018, 8509, 6807, 5446, 5173, 4915, 4669, 4576)
-one_week_bf_2011 <- c(jp_one_week_bf_2011, sa_one_week_bf_2011, nz_one_week_bf_2011)
-two_week_bf_2011 <- c(jp_two_week_bf_2011, sa_two_week_bf_2011, nz_two_week_bf_2011)
-
-# data frame
-
-jp_2011 <- data.frame(amount = jp_total_2011, one_week_bf = jp_one_week_bf_2011, two_week_bf = jp_two_week_bf_2011, three_week_bf = jp_three_week_bf_2011, launch = launch, week = week)
-View(jp_2011)
-
-# exploratory analysis
+# plots
 plot(jp_total_2011n ~ week, col="red", pch = 20, type = "l", main = "Plot of iShades sales in JP, SA & NZ in 2011 3Q", xlab = "Weeks in 2011 3Q", ylab = 'Sales (normalized)')
 lines(sa_total_2011n ~ week, col="blue", pch = 20)
 lines(nz_total_2011n ~ week, col="green", pch=20)
 legend('topright', c("Japan", "South Asia", "New Zealand"), lty=1, lwd=2.5, col=c("red", "blue", "green"))
 
-# 2012 data
-
-japan_t_2012 <- xts(japan_total, date_2012)
-japan_s_2012 <- xts(japan_s, date_2012)
-japan_s_2012
-
-par(mfrow=c(1,2))
-plot(japan_2011, ylim = c(0, 14000))
-plot(japan_t_2012, ylim = c(0, 14000))
-plot(japan_s_2012, ylim = c(0, 14000))
-
-acf(japan_2011)
+# autocorrelation tests for time series analysis
+acf(jp_total_2011)
 Box.test(japan_2011)
 pacf(japan_2011)
 
-# basic model
-model0 <- lm(amount ~ launch + one_week_bf + two_week_bf + country, data = data_2011)
-summary(model0)
-plot(model0)
+########################################################
+# Model Creation and Prediction (Prototyping)
+########################################################
 
-# quadratic models
-model1 <- lm(amount ~ launch + I(one_week_bf^2) + country, data = data_2011)
+# Linear: Amount ~ launch + one_week_before
+model1 <- lm(amount ~ launch + one_week_bf, data = jp_2011_data)
 summary(model1)
 plot(model1)
-model2 <- lm(amount ~ launch + I(one_week_bf^2) + I(two_week_bf^2), data = data_2011)
+
+# Linear: Amount ~ launch + one_week_before + two_week_before (Best in RSE and Fit)
+model1b <- lm(amount ~ launch + one_week_bf + two_week_bf, data = jp_2011_data)
+summary(model1b)
+plot(model1b)
+
+# Linear(Interaction): Amount ~ launch + one_week_before + launch*one_week_before
+model1c <- lm(amount ~ launch*one_week_bf, data = jp_2011_data)
+summary(model1c)
+plot(model1c)
+
+# Quadratic: Amount ~ launch + one_week_before^2
+model2 <- lm(amount ~ launch + I(one_week_bf^2), data = jp_2011_data)
 summary(model2)
 plot(model2)
 
-# basic model (jp) (best model in RSE and fit)
-model0 <- lm(amount ~ launch + one_week_bf + two_week_bf, data = jp_2011)
-summary(model0)
-plot(model0)
-AIC(model0)
-
-# slightly worse than model0, but performs best during test
-model0a <- lm(amount ~ launch + one_week_bf, data = jp_2011)
-summary(model0a)
-plot(model0a)
-AIC(model0a)
-
-# better than model0, but concerns about overfitting
-model0b <- lm(amount ~ launch + one_week_bf + two_week_bf + three_week_bf, data = jp_2011)
-summary(model0b)
-plot(model0b)
-AIC(model0b)
-
-# quadratic models (jp)
-model1 <- lm(amount ~ launch + I(one_week_bf^2), data = jp_2011)
-summary(model1)
-plot(model1)
-AIC(model1)
-model2 <- lm(amount ~ launch + I(one_week_bf^2) + I(two_week_bf^2), data = jp_2011)
-summary(model2)
+# Quadratic: Amount ~ launch + one_week_before^2 + two_week_before^2
+model2b <- lm(amount ~ launch + I(one_week_bf^2) + I(two_week_bf^2), data = jp_2011_data)
+summary(model2b)
 plot(model2)
-AIC(model2)
-
-# interaction model (same as model 1)
-model3 <- lm(amount ~ launch*I(one_week_bf^2), data = jp_2011)
-summary(model3)
-plot(model3)
 
 # plot of actual and predicted values
 plot(jp_2011$amount ~ jp_2011$week, col = "red", lwd = 1.5, pch = 20)
-lines(3:13, model0$fitted, col="blue", lwd = 1.5)
-lines(2:13, model0a$fitted, col="cyan")
-lines(4:13, model0b$fitted, col="orange", lwd = 1.5)
-lines(2:13, model1$fitted, col="blueviolet")
-lines(3:13, model2$fitted, col="green", lwd = 1.5)
+lines(2:13, model1$fitted, col="blue", lwd = 1.5)
+lines(3:13, model1b$fitted, col="cyan")
+lines(2:13, model1c$fitted, col="orange", lwd = 1.5)
+lines(2:13, model2$fitted, col="blueviolet")
+lines(3:13, model2b$fitted, col="green", lwd = 1.5)
 
 legend('topright', c("Actual Data", "Model: Launch + 1, 2 weeks before", "Model: Launch + 1, 2, 3 weeks before", "Model: Launch + (1, 2 weeks before)^2"), lty=1, lwd=2.5, col=c("red", "blue", "orange", "green"))
 =======
