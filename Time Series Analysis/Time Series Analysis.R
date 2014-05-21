@@ -132,6 +132,7 @@ summary(model3)
 plot(model3)
 
 # plot of actual and predicted values
+<<<<<<< HEAD
 plot(jp_2011$amount ~ jp_2011$week, col = "red", type = 'l', lwd = 1.5)
 lines(3:13, model0$fitted, col="blue", lwd = 1.5)
 lines(2:13, model0a$fitted, col="cyan")
@@ -140,12 +141,23 @@ lines(2:13, model1$fitted, col="blueviolet")
 lines(3:13, model2$fitted, col="green", lwd = 1.5)
 
 legend('topright', c("Actual Data", "Model: Launch + 1, 2 weeks before", "Model: Launch + 1, 2, 3 weeks before", "Model: Launch + (1, 2 weeks before)^2"), lty=1, lwd=2.5, col=c("red", "blue", "orange", "green"))
+=======
+plot(jp_2011$amount ~ jp_2011$week, col = "red", type = 'l')
+lines(1:13, jp_total_2012a, col = 'blue')
+lines(1:13, predict(model0, newdata), col='green')
+lines(3:13, model0$fitted, col="blue")
+lines(2:13, model0a$fitted, col="orange")
+lines(4:13, model0b$fitted, col="cyan")
+lines(2:13, model1$fitted, col="green")
+lines(3:13, model2$fitted, col="blueviolet")
+>>>>>>> 791f21cdda35afa0ad260293a9f5537f22f8fb07
 
 # predictions
-jp_total_2012 <- c(7946, 6641, 5975, 5378, 5217, NA, NA, NA, NA, NA, NA, NA, NA)
-jp_one_week_bf_2012 <- c(NA, 7946, 6641, 5975, 5378, 5217, NA, NA, NA, NA, NA, NA, NA)
-jp_two_week_bf_2012 <- c(NA, NA, 7946, 6641, 5975, 5378, 5217, NA, NA, NA, NA, NA, NA)
+jp_total_2012a <- c(7946, 6641, 5975, 5378, 5217, NA, NA, NA, NA, NA, NA, NA, NA)
+jp_total_2012 <- c(7946, 6641, 5975, 5378, 5217, 13700, 10642, 9757, 8874, 8239, 7755, 7390, NA)
+jp_one_week_bf_2012 <- c(NA, 7946, 6641, 5975, 5378, 5217, 13700, 10642, 9757, 8874, 8239, 7755, 7390)
+jp_two_week_bf_2012 <- c(NA, NA, 7946, 6641, 5975, 5378, 5217, 13700, 10642, 9757, 8874, 8239, 7755)
 launch_2012 <- c(rep('bf', 5), 'launch', rep('af', 7))
 newdata <- data.frame(amount = jp_total_2012, one_week_bf = jp_one_week_bf_2012, two_week_bf = jp_two_week_bf_2012, launch = launch_2012, week = week)
 View(newdata)
-predict(model0, newdata, interval='predict')
+View(predict(model0, newdata))
