@@ -38,7 +38,7 @@ two_week_bf_2011 <- c(jp_two_week_bf_2011, sa_two_week_bf_2011, nz_two_week_bf_2
 # data frame
 data_2011 <- data.frame(amount = total_2011, one_week_bf = one_week_bf_2011, two_week_bf = two_week_bf_2011, country = country, weeks = weeks, launch = launch)
 jp_2011 <- data.frame(amount = jp_total_2011, one_week_bf = jp_one_week_bf_2011, two_week_bf = jp_two_week_bf_2011, three_week_bf = jp_three_week_bf_2011, launch = launch, week = week)
-View(data_2011)
+View(jp_2011)
 
 # exploratory analysis
 plot(jp_total_2011n ~ week, col="red", pch = 20, type = "l", main = "Plot of iShades sales in JP, SA & NZ in 2011 3Q", xlab = "Weeks in 2011 3Q", ylab = 'Sales (normalized)')
@@ -132,12 +132,14 @@ summary(model3)
 plot(model3)
 
 # plot of actual and predicted values
-plot(jp_2011$amount ~ jp_2011$week, col = "red", type = 'l')
-lines(3:13, model0$fitted, col="blue")
-lines(2:13, model0a$fitted, col="orange")
-lines(4:13, model0b$fitted, col="cyan")
-lines(2:13, model1$fitted, col="green")
-lines(3:13, model2$fitted, col="blueviolet")
+plot(jp_2011$amount ~ jp_2011$week, col = "red", type = 'l', lwd = 1.5)
+lines(3:13, model0$fitted, col="blue", lwd = 1.5)
+lines(2:13, model0a$fitted, col="cyan")
+lines(4:13, model0b$fitted, col="orange", lwd = 1.5)
+lines(2:13, model1$fitted, col="blueviolet")
+lines(3:13, model2$fitted, col="green", lwd = 1.5)
+
+legend('topright', c("Actual Data", "Model: Launch + 1, 2 weeks before", "Model: Launch + 1, 2, 3 weeks before", "Model: Launch + (1, 2 weeks before)^2"), lty=1, lwd=2.5, col=c("red", "blue", "orange", "green"))
 
 # predictions
 jp_total_2012 <- c(7946, 6641, 5975, 5378, 5217, NA, NA, NA, NA, NA, NA, NA, NA)
