@@ -9,21 +9,23 @@ date_2012 <- as.Date(c('2012-07-01', '2012-07-08', '2012-07-15', '2012-07-22', '
 # Japan 2011 Sales Figures and data frame
 week <- 1:13
 launch_2011 <- c(rep('bf',3), 'launch', rep('af',9))
+countdown_2011 <- factor(-3:9)
 
 jp_total_2011 <- c(5297, 4398, 4979, 13445, 10433, 9390, 8920, 8474, 8051, 7648, 6597, 6795, 6659)
 jp_total_1wbf_2011 <- c(NA, 5297, 4398, 4979, 13445, 10433, 9390, 8920, 8474, 8051, 7648, 6597, 6795)
 jp_total_2wbf_2011 <- c(NA, NA, 5297, 4398, 4979, 13445, 10433, 9390, 8920, 8474, 8051, 7648, 6597)
-jp_2011_data <- data.frame(amount = jp_total_2011, one_week_bf = jp_total_1wbf_2011, two_week_bf = jp_total_2wbf_2011, week = week, launch = launch_2011)
+jp_2011_data <- data.frame(amount = jp_total_2011, one_week_bf = jp_total_1wbf_2011, two_week_bf = jp_total_2wbf_2011, week = week, launch = launch_2011, count = countdown)
 View(jp_2011_data)
 
 # Japan 2012 Sale Figures and data frames
 week <- 1:13
 launch_2012 <- c(rep('bf',5), 'launch', rep('af',7))
+countdown_2012 <- factor(-5:7)
 
 jp_total_2012 <- c(7946, 6641, 5975, 5378, 5217, NA, NA, NA, NA, NA, NA, NA, NA)
 jp_total_1wbf_2012 <- c(NA, 7946, 6641, 5975, 5378, 5217, NA, NA, NA, NA, NA, NA, NA)
 jp_total_2wbf_2012 <- c(NA, NA, 7946, 6641, 5975, 5378, 5217, NA, NA, NA, NA, NA, NA)
-jp_2012_data <- data.frame(amount = jp_total_2012, one_week_bf = jp_total_1wbf_2012, two_week_bf = jp_total_2wbf_2012, week = week, launch = launch_2012)
+jp_2012_data <- data.frame(amount = jp_total_2012, one_week_bf = jp_total_1wbf_2012, two_week_bf = jp_total_2wbf_2012, week = week, launch = launch_2012, count = countdown_2012)
 View(jp_2012_data)
 
 # Colour Breakdown (Silver, Pink, Red, Green, Blue; actual, one week before, two weeks before)
@@ -192,7 +194,7 @@ summary(model1)
 plot(model1)
 
 # Linear: Amount ~ launch + one_week_before + two_week_before (Best in RSE and Fit)
-model1b <- lm(amount ~ launch + one_week_bf + two_week_bf, data = jp_2011_data)
+model1b <- lm(amount ~ launch + one_week_bf + two_week_bf + count, data = jp_2011_data)
 summary(model1b)
 plot(model1b)
 
@@ -212,56 +214,24 @@ summary(model2b)
 plot(model2)
 
 # plot of actual and predicted values
-plot(jp_2011$amount ~ jp_2011$week, col = "red", lwd = 1.5, pch = 20)
-lines(2:13, model1$fitted, col="blue", lwd = 1.5)
-lines(3:13, model1b$fitted, col="cyan")
-lines(2:13, model1c$fitted, col="orange", lwd = 1.5)
-lines(2:13, model2$fitted, col="blueviolet")
-lines(3:13, model2b$fitted, col="green", lwd = 1.5)
+plot(jp_2011_data$amount ~ jp_2011_data$week, col = "red", lwd = 1.5, pch = 20, xlab = "Weeks in 2011 3Q", ylab = "Sales")
+lines(2:13, model1$fitted, col="blue", lwd = 2)
+lines(3:13, model1b$fitted, col="cyan", lwd = 2)
+lines(2:13, model1c$fitted, col="orange", lwd = 2)
+lines(2:13, model2$fitted, col="blueviolet", lwd = 2)
+lines(3:13, model2b$fitted, col="green", lwd = 2)
 
-legend('topright', c("Actual Data", "Model: Launch + 1, 2 weeks before", "Model: Launch + 1, 2, 3 weeks before", "Model: Launch + (1, 2 weeks before)^2"), lty=1, lwd=2.5, col=c("red", "blue", "orange", "green"))
-=======
-plot(jp_2011$amount ~ jp_2011$week, col = "red", pch = 20)
-points(1:13, jp_total_2012a, col = 'blue', pch = 20)
-lines(1:13, predict(model0, newdata), col='green')
-lines(1:13, predict(model0a, newdata), col='orange')
-lines(1:13, newdata2$amount, col = 'green')
-lines(1:13, newdata3$amount, col = 'pink')
-lines(1:13, predict(model0b, newdata), col='cyan')
-lines(1:13, predict(model1, newdata), col='green')
-lines(1:13, predict(model2, newdata), col='blueviolet')
-lines(1:13, predict(model3, newdata), col='brown')
-lines(3:13, model0$fitted, col="blue")
-lines(2:13, model0a$fitted, col="orange")
-lines(4:13, model0b$fitted, col="cyan")
-lines(2:13, model1$fitted, col="green")
-lines(3:13, model2$fitted, col="blueviolet")
-
-# predictions
-jp_total_2012a <- c(7946, 6641, 5975, 5378, 5217, NA, NA, NA, NA, NA, NA, NA, NA)
-
-jp_three_week_bf_2012a <- c(NA, NA, NA, 7946, 6641, 5975, 5378, 5217, NA, NA, NA, NA, NA)
-jp_total_2012 <- c(7946, 6641, 5975, 5378, 5217, 13700, 10642, 9757, 8874, 8239, 7755, 7390, NA)
-jp_one_week_bf_2012 <- c(NA, 7946, 6641, 5975, 5378, 5217, 13700, 10642, 9757, 8874, 8239, 7755, 7390)
-jp_two_week_bf_2012 <- c(NA, NA, 7946, 6641, 5975, 5378, 5217, 13700, 10642, 9757, 8874, 8239, 7755)
-launch_2012 <- c(rep('bf', 5), 'launch', rep('af', 7))
-newdata <- data.frame(amount = jp_total_2012a, one_week_bf = jp_one_week_bf_2012a, launch = launch_2012, week = week)
-View(newdata)
-View(predict(model0, newdata))
-predict(model0a, newdata)
-
-amount <- c(7946, 6641, 5975, 5378, 5217, NA, NA, NA, NA, NA, NA, NA, NA)
-one_week_bf <- c(NA, 7946, 6641, 5975, 5378, 5217, NA, NA, NA, NA, NA, NA, NA)
-launch_2012 <- c(rep('bf', 5), 'launch', rep('af', 7))
+legend('topright', c("Model: Launch + 1 week before", "Model: Launch + 1, 2 weeks before", "Model: Launch*1 week before (interaction)", "Model: Launch + (1 week before)^2)", "Model: Launch + (1, 2 weeks before)^2"), lty=1, lwd=2.5, col=c("blue", "cyan", "orange", "blueviolet", "green"))
 
 # function with amount ~ launch + one_week_before
 fit1 <- function(x, y, z) {
     amount <- x
     one_week_bf <- y
     launch <- z
+    week <- 1:13
     newdata <- data.frame(amount = amount, one_week_bf = one_week_bf, launch = launch, week = week)
-    for (i in 1:12) {
-        predicted <- predict(model0a, newdata)
+    for (i in 1:13) {
+        predicted <- predict(model1, newdata)
         newdata$amount[i+1] <- predicted[i+1]
         try(newdata$one_week_bf[i+2] <- predicted[i+1])
     }
@@ -276,7 +246,7 @@ fit2 <- function(x, y, z, a) {
     launch <- a
     newdata <- data.frame(amount = amount, one_week_bf = one_week_bf, two_week_bf = two_week_bf, launch = launch, week = week)
     for (i in 1:11) {
-        predicted <- predict(model0, newdata)
+        predicted <- predict(model1b, newdata)
         newdata$amount[i+2] <- predicted[i+2]
         try(newdata$one_week_bf[i+3] <- predicted[i+2])
         try(newdata$two_week_bf[i+4] <- predicted[i+2])
@@ -284,20 +254,42 @@ fit2 <- function(x, y, z, a) {
     return(newdata)
 }
 
-# test with 2011 data
-newdata2 <- fit1(jp_total_2011, jp_one_week_bf_2011, launch_2011)
-View(newdata2)
-rm(newdata2)
+# Forecast with 2011 Total Data: Model1 and Model1b
+jp_2011_fc_a <- fit1(jp_2011_data$amount, jp_2011_data$one_week_bf, jp_2011_data$launch)
+View(jp_2011_fc_a)
 
-newdata3 <- fit2(jp_total_2011, jp_one_week_bf_2011, jp_two_week_bf_2011, launch_2011)
-View(newdata3)
+jp_2011_fc_b <- fit2(jp_2011_data$amount, jp_2011_data$one_week_bf, jp_2011_data$two_week_bf, jp_2011_data$launch)
+View(jp_2011_fc_b)
 
-#test with 2012 data
-newdata2 <- fit1(jp_total_2012a, jp_one_week_bf_2012a, launch_2012)
-View(newdata2)
+plot(jp_2011_data$amount ~ jp_2011_data$week, col = "red", pch = 20)
+lines(1:13, jp_2011_fc_a$amount, col = 'green')
+lines(1:13, jp_2011_fc_b$amount, col = 'blue')
 
-newdata3 <- fit2(jp_total_2012a, jp_one_week_bf_2012a, jp_two_week_bf_2012a, launch_2012)
-View(newdata3)
+# Forecast with 2012 Total Data: Model1 and Model1b
+jp_2012_fc_a <- fit1(jp_2012_data$amount, jp_2012_data$one_week_bf, jp_2012_data$launch)
+View(jp_2012_fc_a)
 
-lines(1:13, newdata2$amount, col = 'green')
-lines(1:13, newdata3$amount, col = 'pink')
+jp_2012_fc_b <- fit2(jp_2012_data$amount, jp_2012_data$one_week_bf, jp_2012_data$two_week_bf, jp_2012_data$launch)
+View(jp_2012_fc_b)
+
+plot(jp_2012_data$amount ~ jp_2012_data$week, col = "red", pch = 20, ylim = c(1000, 15000))
+lines(1:13, jp_2012_fc_a$amount, col = 'green')
+lines(1:13, jp_2012_fc_b$amount, col = 'blue')
+
+# Forecast with 2012 Silver Data: Model1 and Model1b
+jp_s_2012_fc_a <- fit1(jp_s_2012_data$amount, jp_s_2012_data$one_week_bf, jp_s_2012_data$launch)
+View(jp_s_2012_fc_a)
+
+jp_s_2012_fc_b <- fit2(jp_s_2012_data$amount, jp_s_2012_data$one_week_bf, jp_s_2012_data$two_week_bf, jp_s_2012_data$launch)
+View(jp_s_2012_fc_b)
+
+plot(jp_s_2012_data$amount ~ jp_s_2012_data$week, col = "red", pch = 20, ylim = c(1000, 15000))
+lines(1:13, jp_s_2012_fc_a$amount, col = 'green')
+lines(1:13, jp_s_2012_fc_b$amount, col = 'blue')
+
+
+
+
+
+
+
