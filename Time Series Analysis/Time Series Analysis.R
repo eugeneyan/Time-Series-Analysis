@@ -182,9 +182,9 @@ total_2011n <- data.frame(jp = jp_total_2011n, sa = sa_total_2011n, nz = nz_tota
 cor(total_2011n)
 
 # plots
-plot(jp_total_2011n ~ week, col="red", pch = 20, type = "l", main = "Plot of iShades sales in JP, SA & NZ in 2011 3Q", xlab = "Weeks in 2011 3Q", ylab = 'Sales (normalized)')
-lines(sa_total_2011n ~ week, col="blue", pch = 20)
-lines(nz_total_2011n ~ week, col="green", pch=20)
+plot(jp_total_2011n ~ week, col="red", pch = 20, type = "l", lwd = '2', main = "Figure 1: Plot of iShades sales in JP, SA & NZ in 2011 3Q", xlab = "Weeks in 2011 3Q", ylab = 'Sales (normalized)')
+lines(sa_total_2011n ~ week, col="blue", pch = 20, lwd = '2')
+lines(nz_total_2011n ~ week, col="green", pch=20, lwd = '2')
 legend('topright', c("Japan", "South Asia", "New Zealand"), lty=1, lwd=2.5, col=c("red", "blue", "green"))
 
 # autocorrelation tests for time series analysis
@@ -220,7 +220,7 @@ summary(model2b)
 plot(model2)
 
 # plot of actual and predicted values
-plot(jp_2011_data$amount ~ jp_2011_data$week, col = "red", lwd = 1.5, pch = 20, xlab = "Weeks 1-13 in 2011 Q3", ylab = "Sales")
+plot(jp_2011_data$amount ~ jp_2011_data$week, col = "red", lwd = 1.5, pch = 20, xlab = "Weeks in 2011 Q3", ylab = "Sales", main = "Figure 2: Plot of Regression Models' fitted values against Japan's 2011 Sales data")
 lines(2:13, model1$fitted, col="blue", lwd = 1.5)
 lines(3:13, model1b$fitted, col="cyan", lwd = 1.5)
 lines(2:13, model1c$fitted, col="orange", lwd = 1.5)
@@ -371,6 +371,10 @@ lines(jp_b_2012_fca_n$week, jp_b_2012_fca_n$amount, col = 'blue')
 # Linear: Amount ~ launch + one_week_before
 model_sa <- lm(amount ~ launch + one_week_bf, data = sa_2011_data)
 summary(model_sa)
+
+
+
+
 
 model_sa2 <- lm(amount ~ launch + one_week_bf + two_week_bf, data = sa_2011_data)
 summary(model_sa2)
@@ -584,4 +588,3 @@ nz_b_2012_fca_n
 
 plot(1:13, sa_b_2012_data$original, type = "p", pch = 20, col = "red", ylim = c(0, 5000))
 lines(sa_b_2012_fca_n$week, sa_b_2012_fca_n$amount, col = 'blue')
-
