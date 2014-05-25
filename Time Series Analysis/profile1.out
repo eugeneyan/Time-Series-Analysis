@@ -1,0 +1,2 @@
+line profiling: sample.interval=20000
+"paste" "FUN" "lapply" "sapply" "model.frame.default" "<Anonymous>" "eval" "eval" "lm" "eval" 
